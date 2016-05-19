@@ -1,0 +1,8 @@
+# Emacs temporary files
+*~
+\#*\#
+auto-save-list
+.\#*
+
+# original ini config file
+ttldap.ini

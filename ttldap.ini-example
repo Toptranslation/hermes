@@ -1,0 +1,37 @@
+[DEFAULT]
+# The LDAP port used on the server.
+port: 389
+
+# True if the service on the above port uses SSL.
+ssl: False
+
+# The IP address or name of the server.
+server: 1.2.3.4
+
+# The base of your LDAP structure.
+base: dc=yourcompany,dc=com
+
+# The People DN.
+peopledn: ou=people
+
+# The DN of your former workers.
+formerdn: ou=former workers
+
+# The DN for your bots.
+botsdn: ou=bots
+
+# The DN of your clients.
+clientsdn: ou=clients
+
+# The DN of your groups.
+groupsdn: ou=groups
+
+# The SSH port you use to connect.
+sshport: 22
+
+# The local port you want to bind to.
+localport: 3890
+
+# Your LDAP UID.
+username: yourusername
+
