@@ -76,16 +76,16 @@ def _load_configuration():
     config = configparser.RawConfigParser()
 
     # Get the .ini file path.
-    inipath = os.path.join(os.getcwd(), "ttldap.ini")
+    inipath = os.path.join(os.getcwd(), "hermes.ini")
 
     # Raise exception if couldn't find the file.
     if not config.read(inipath):
-        raise Exception("[ERROR] Could not find ttldap.ini.")
+        raise Exception("[ERROR] Could not find hermes.ini.")
 
     return config
 
 
-class ForwardServer (SocketServer.ThreadingTCPServer):
+class ForwardServer(SocketServer.ThreadingTCPServer):
     """Handle forwarded ports.
 
     Used in the SSH Forwarding code, and acts as a server, which handles
@@ -97,7 +97,7 @@ class ForwardServer (SocketServer.ThreadingTCPServer):
     allow_reuse_address = True
 
 
-class Handler (SocketServer.BaseRequestHandler):
+class Handler(SocketServer.BaseRequestHandler):
     """Handle the data from the SSH tunnel."""
 
     def handle(self):
@@ -105,9 +105,9 @@ class Handler (SocketServer.BaseRequestHandler):
         # Try to connect to the SSH Server.
         try:
             chan = self.ssh_transport.open_channel(
-                   "direct-tcpip",
-                   (self.chain_host, self.chain_port),
-                   self.request.getpeername())
+                "direct-tcpip",
+                (self.chain_host, self.chain_port),
+                self.request.getpeername())
 
         # Server didn't respond.
         except Exception as e:
@@ -196,7 +196,7 @@ def parse_options(CONFIG):
     # Add the required parameter username, which will be used to bind
     # to the LDAP server.
     parser.add_argument("-E", "--environment",
-                        help="Choose your environment (from ttldap.ini)",
+                        help="Choose your environment (from hermes.ini)",
                         default="DEFAULT")
 
     args, remaining_args = parser.parse_known_args()
@@ -265,7 +265,7 @@ def parse_options(CONFIG):
 
     # Adding subparser, with their name stored inside COMMAND
     # variable.
-    subparsers = parser.add_subparsers(help="Use ttldap COMMAND --help \
+    subparsers = parser.add_subparsers(help="Use hermes COMMAND --help \
                                        to see the options available to \
                                        that command.",
                                        dest="COMMAND")
@@ -503,7 +503,7 @@ def daemon(options):
 
     except Exception as e:
         print("[ERROR] Failed to connect to %s:%d: %r" % (options.server,
-              options.sshport, e))
+                                                          options.sshport, e))
 
         sys.exit(0)
 
@@ -809,7 +809,7 @@ def ldapcreate(options, conn):
             sys.exit(0)
 
         # Proceeds just if the username has the form: firstname.lastname.
-        if re.match("[a-z]+\.[a-z]+", options.UID):
+        if re.match("[a-z]+.[a-z]+", options.UID):
 
             # Gets the DN of the person to be created.
             dn = ",".join(("uid=" + options.UID,
@@ -824,7 +824,7 @@ def ldapcreate(options, conn):
 
             # If the user supplied a password, it's used, otherwise
             # "please_change!" is set up as a password.
-            if (options.password):
+            if options.password:
                 attributes["userPassword"] = ssha.encrypt(options.password)
             else:
                 attributes["userPassword"] = ssha.encrypt("please_change!")
@@ -850,22 +850,22 @@ def ldapcreate(options, conn):
             attributes["mail"] = [options.UID + "@toptranslation.com"]
 
             # add information from the command line arguments.
-            if (options.mail):
+            if options.mail:
                 attributes["mail"] += options.mail
 
-            if (options.mobile):
+            if options.mobile:
                 attributes["mobile"] = options.mobile
 
-            if (options.department):
+            if options.department:
                 attributes["ou"] = options.department
 
-            if (options.telephone):
+            if options.telephone:
                 attributes["telephoneNumber"] = options.mobile
 
-            if (options.title):
+            if options.title:
                 attributes["title"] = options.title
 
-            if (options.description):
+            if options.description:
                 attributes["description"] = options.description
 
             verbose(options)("[INFO] LDAP add:" +
@@ -932,8 +932,8 @@ def ldapcreate(options, conn):
         if conn.search(search_base=",".join((options.botsdn,
                                              options.base)),
                        search_filter="(&" +
-                                     "(objectClass=inetOrgPerson)" +
-                                     "(uid=" + options.UID+"))"):
+                       "(objectClass=inetOrgPerson)" +
+                       "(uid=" + options.UID+"))"):
 
             print("[ERROR] User " + options.UID +
                   " already exists. Please use modify instead of create")
@@ -952,7 +952,7 @@ def ldapcreate(options, conn):
         attributes["uid"] = options.UID
 
         # Set up bot's password. If not given, use "please_change!".
-        if (options.password):
+        if options.password:
             attributes["userPassword"] = ssha.encrypt(options.password)
 
         else:
@@ -966,22 +966,22 @@ def ldapcreate(options, conn):
 
         attributes["givenName"] = options.UID
 
-        if (options.mail):
+        if options.mail:
             attributes["mail"] = options.mail
 
-        if (options.mobile):
+        if options.mobile:
             attributes["mobile"] = options.mobile
 
-        if (options.department):
+        if options.department:
             attributes["ou"] = options.department
 
-        if (options.telephone):
+        if options.telephone:
             attributes["telephoneNumber"] = options.mobile
 
-        if (options.title):
+        if options.title:
             attributes["title"] = options.title
 
-        if (options.description):
+        if options.description:
             attributes["description"] = options.description
 
         verbose(options)("[INFO] LDAP add:" +
@@ -1002,8 +1002,8 @@ def ldapcreate(options, conn):
         if conn.search(search_base=",".join((options.clientsdn,
                                              options.base)),
                        search_filter="(&" +
-                                     "(objectClass=inetOrgPerson)" +
-                                     "(uid=" + options.UID + "))"):
+                       "(objectClass=inetOrgPerson)" +
+                       "(uid=" + options.UID + "))"):
 
             print("[ERROR] User " + options.UID +
                   " already exists. Please use modify instead of create")
@@ -1027,7 +1027,7 @@ def ldapcreate(options, conn):
 
         # Set user's password. If not specified by the user, the
         # default "please_change!" is set.
-        if (options.password):
+        if options.password:
             attributes["userPassword"] = ssha.encrypt(options.password)
 
         else:
@@ -1051,22 +1051,22 @@ def ldapcreate(options, conn):
         attributes["loginShell"] = "/bin/bash"
 
         # Set up the arguments from the command line.
-        if (options.mail):
+        if options.mail:
             attributes["mail"] = options.mail
 
-        if (options.mobile):
+        if options.mobile:
             attributes["mobile"] = options.mobile
 
-        if (options.department):
+        if options.department:
             attributes["ou"] = options.department
 
-        if (options.telephone):
+        if options.telephone:
             attributes["telephoneNumber"] = options.mobile
 
-        if (options.title):
+        if options.title:
             attributes["title"] = options.title
 
-        if (options.description):
+        if options.description:
             attributes["description"] = options.description
 
         verbose(options)("[INFO] LDAP add:" +
@@ -1118,8 +1118,8 @@ def ldapdelete(options, conn):
         if not conn.search(search_base=",".join((options.peopledn,
                                                  options.base)),
                            search_filter="(&" +
-                                         "(objectClass=inetOrgPerson)" +
-                                         "(uid=" + options.UID + "))"):
+                           "(objectClass=inetOrgPerson)" +
+                           "(uid=" + options.UID + "))"):
 
             print("[ERROR] User " + options.UID +
                   " doesn't exists. Nothing to delete")
@@ -1145,8 +1145,8 @@ def ldapdelete(options, conn):
         conn.modify(dn,
                     {"userPassword": (ldap3.MODIFY_REPLACE,
                                       [ssha.encrypt(
-                                        ssha.encrypt(
-                                         "randomuselesssaltedpassword"))])})
+                                          ssha.encrypt(
+                                              "randomuselesssaltedpassword"))])})
 
         verbose(options)("[INFO] " + str(conn.result))
 
@@ -1202,8 +1202,8 @@ def ldapdelete(options, conn):
         if conn.search(search_base=",".join((options.formerdn,
                                              options.base)),
                        search_filter="(&" +
-                                     "(objectClass=inetOrgPerson)" +
-                                     "(uid=" + options.UID + "))"):
+                       "(objectClass=inetOrgPerson)" +
+                       "(uid=" + options.UID + "))"):
 
             print("[WARN] User uid=" + options.UID + "," + newdn +
                   " already exists. Overwriting")
@@ -1238,8 +1238,8 @@ def ldapdelete(options, conn):
         if not conn.search(search_base=",".join((options.botsdn,
                                                  options.base)),
                            search_filter="(&" +
-                                         "(objectClass=inetOrgPerson)" +
-                                         "(uid=" + options.UID + "))"):
+                           "(objectClass=inetOrgPerson)" +
+                           "(uid=" + options.UID + "))"):
 
             print("[ERROR] User " + options.UID +
                   " doesn't exists. Nothing to delete")
@@ -1264,8 +1264,8 @@ def ldapdelete(options, conn):
         if not conn.search(search_base=",".join((options.clientsdn,
                                                  options.base)),
                            search_filter="(&" +
-                                         "(objectClass=inetOrgPerson)" +
-                                         "(uid=" + options.UID + "))"):
+                           "(objectClass=inetOrgPerson)" +
+                           "(uid=" + options.UID + "))"):
 
             print("[ERROR] User " + options.UID +
                   " doesn't exists. Nothing to delete")
@@ -1303,8 +1303,8 @@ def ldapmodify(options, conn):
         if not conn.search(search_base=",".join((options.peopledn,
                                                  options.base)),
                            search_filter="(&" +
-                                         "(objectClass=inetOrgPerson)" +
-                                         "(uid=" + options.UID + "))"):
+                           "(objectClass=inetOrgPerson)" +
+                           "(uid=" + options.UID + "))"):
 
             print("[ERROR] User " + options.UID +
                   " doesn't exist. Nothing to modify")
@@ -1320,8 +1320,8 @@ def ldapmodify(options, conn):
         if not conn.search(search_base=",".join((options.botsdn,
                                                  options.base)),
                            search_filter="(&" +
-                                         "(objectClass=inetOrgPerson)" +
-                                         "(uid=" + options.UID + "))"):
+                           "(objectClass=inetOrgPerson)" +
+                           "(uid=" + options.UID + "))"):
 
             print("[ERROR] User " + options.UID +
                   " doesn't exist. Nothing to modify")
@@ -1337,8 +1337,8 @@ def ldapmodify(options, conn):
         if not conn.search(search_base=",".join((options.clientsdn,
                                                  options.base)),
                            search_filter="(&" +
-                                         "(objectClass=posixAccount)" +
-                                         "(uid=" + options.UID + "))"):
+                           "(objectClass=posixAccount)" +
+                           "(uid=" + options.UID + "))"):
 
             print("[ERROR] User " + options.UID +
                   " doesn't exist. Nothing to modify")
@@ -1351,7 +1351,7 @@ def ldapmodify(options, conn):
                        options.base))
 
     # Set up the arguments from the command line.
-    if (options.password):
+    if options.password:
         verbose(options)("[INFO] LDAP modify_replace:\n\t" + dn +
                          "\n\treplace: userPassword")
 
@@ -1362,7 +1362,7 @@ def ldapmodify(options, conn):
 
         verbose(options)("[INFO] " + str(conn.result))
 
-    if (options.mail):
+    if options.mail:
         verbose(options)("[INFO] LDAP modify_delete:\n\t" + dn +
                          "\n\tdelete: mail")
 
@@ -1381,7 +1381,7 @@ def ldapmodify(options, conn):
 
         verbose(options)("[INFO] " + str(conn.result))
 
-    if (options.mobile):
+    if options.mobile:
         verbose(options)("[INFO] LDAP modify_delete:\n\t" + dn +
                          "\n\tdelete: mobile")
 
@@ -1400,7 +1400,7 @@ def ldapmodify(options, conn):
 
         verbose(options)("[INFO] " + str(conn.result))
 
-    if (options.department):
+    if options.department:
         verbose(options)("[INFO] LDAP modify_replace:\n\t" + dn +
                          "\n\tou: " + options.department)
 
@@ -1411,7 +1411,7 @@ def ldapmodify(options, conn):
 
         verbose(options)("[INFO] " + str(conn.result))
 
-    if (options.telephone):
+    if options.telephone:
         verbose(options)("[INFO] LDAP modify_delete:\n\t" + dn +
                          "\n\tdelete: telephoneNumber")
 
@@ -1428,7 +1428,7 @@ def ldapmodify(options, conn):
 
         verbose(options)("[INFO] " + str(conn.result))
 
-    if (options.title):
+    if options.title:
         verbose(options)("[INFO] LDAP modify_replace:\n\t" + dn +
                          "\n\ttitle: " + options.title)
 
@@ -1438,7 +1438,7 @@ def ldapmodify(options, conn):
 
         verbose(options)("[INFO] " + str(conn.result))
 
-    if (options.description):
+    if options.description:
         verbose(options)("[INFO] LDAP modify_add:\n\t" + dn +
                          "\n\tdescription: " + str(options.description))
 
