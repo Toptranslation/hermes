@@ -1,8 +1,8 @@
-# TTLDAP: TopTranslation LDAP script
+# Hermes: TopTranslation LDAP script
 
 ## What is this?
 
-TTLDAP is a Python script, which simplifies our LDAP user management
+HERMES is a Python script, which simplifies our LDAP user management
 at Toptranslation. Our LDAP server resides in a Docker container, and
 it doesn't expose itself to the outside world. So instead of manually
 playing with LDAP every time we need a change, I wrote this script, in
@@ -12,7 +12,7 @@ hope to make our user management easier.
 
 First of all, clone this repository on your computer:
 ```
-git clone https://github.com/tequir00t/ttldap && cd ttldap
+git clone https://github.com/tequir00t/hermes && cd hermes
 ```
 This script is written in python3, so you'll need to have it installed:
 ```
@@ -30,7 +30,7 @@ sudo pip3 install -r requirements.txt
 ## Configuration
 
 Configurations are stored in a *.ini file in the same directory with
-the script. Rename [ttldap.ini-example](ttldap.ini-example) to ttldap.ini, and edit it to
+the script. Rename [hermes.ini-example](hermes.ini-example) to hermes.ini, and edit it to
 suit your own needs. You can also add more sections to the file, so
 you can manage multiple LDAP servers, or using multiple users.
 
@@ -48,14 +48,14 @@ Use -b for bots, -p for people, and -c for clients. To search for a
 user matching john.smith, use the following command:
 
 ```
-python ttldap.py print -p john.smith
+python hermes.py print -p john.smith
 ```
 Replace -p with -b or -c, if you search for bots or clients.
 
 The script will also check for partially matching names, so in this
 case, just writing john or smith should be enough:
 ```
-python ttldap.py print -p smith
+python hermes.py print -p smith
 ```
 
 ### Forward
@@ -71,7 +71,7 @@ Use -b for bots, -p for people, and -c for clients. To create a user
 john.smith, use the following command:
 
 ```
-python ttldap.py create -p john.smith --mail john.smith@toptranslation.com --mail js@toptranslation.com --password 'ASReub076!$)' --description "This is John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department management --title "windows cleaner"
+python hermes.py create -p john.smith --mail john.smith@toptranslation.com --mail js@toptranslation.com --password 'ASReub076!$)' --description "This is John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department management --title "windows cleaner"
 ```
 
 Replace -p with -b or -c, if you want to create a bot or a client.
@@ -86,7 +86,7 @@ Use -b for bots, -p for people, and -c for clients. To delete a user,
 just the UID is required:
 
 ```
-python ttldap.py delete -p john.smith
+python hermes.py delete -p john.smith
 ```
 
 ### Modify
@@ -100,12 +100,12 @@ person, and want to keep the old email intact, you need to add --mail
 twice, once with the old email, and once with the new one.
 
 ```
-python ttldap.py modify -p john.smith --mail js@toptranslation.com --password 'sntauohe+r,{]' --description "This is not John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department sales --title "Windows Seller"
+python hermes.py modify -p john.smith --mail js@toptranslation.com --password 'sntauohe+r,{]' --description "This is not John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department sales --title "Windows Seller"
 ```
 
 ## Bugs
 
-After I started reading the configuration from the ttldap.ini file,
+After I started reading the configuration from the hermes.ini file,
 the --help menu doesn't work anymore. I'll get to fix that ASAP.
 
 ## License
