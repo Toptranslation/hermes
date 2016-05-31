@@ -1,4 +1,4 @@
-# Hermes: TopTranslation LDAP script
+# Hermes: Toptranslation LDAP script
 
 ## What is this?
 
@@ -12,7 +12,7 @@ hope to make our user management easier.
 
 First of all, clone this repository on your computer:
 ```
-git clone https://github.com/tequir00t/hermes && cd hermes
+git clone https://github.com/toptranslation/hermes && cd hermes
 ```
 This script is written in python3, so you'll need to have it installed:
 ```
@@ -48,15 +48,21 @@ Use -b for bots, -p for people, and -c for clients. To search for a
 user matching john.smith, use the following command:
 
 ```
-python hermes.py print -p john.smith
+./hermes.py print -p john.smith
 ```
 Replace -p with -b or -c, if you search for bots or clients.
 
 The script will also check for partially matching names, so in this
 case, just writing john or smith should be enough:
 ```
-python hermes.py print -p smith
+./hermes.py print -p smith
 ```
+
+To list all available users, use ALL as a UID:
+```
+./hermes.py print -p ALL
+```
+Replace -p with -b or -c, if you want to list all bots or all clients.
 
 ### Forward
 
@@ -71,7 +77,7 @@ Use -b for bots, -p for people, and -c for clients. To create a user
 john.smith, use the following command:
 
 ```
-python hermes.py create -p john.smith --mail john.smith@toptranslation.com --mail js@toptranslation.com --password 'ASReub076!$)' --description "This is John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department management --title "windows cleaner"
+./hermes.py create -p john.smith --mail john.smith@toptranslation.com --mail js@toptranslation.com --password 'ASReub076!$)' --description "This is John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department management --title "windows cleaner"
 ```
 
 Replace -p with -b or -c, if you want to create a bot or a client.
@@ -86,7 +92,7 @@ Use -b for bots, -p for people, and -c for clients. To delete a user,
 just the UID is required:
 
 ```
-python hermes.py delete -p john.smith
+./hermes.py delete -p john.smith
 ```
 
 ### Modify
@@ -100,7 +106,7 @@ person, and want to keep the old email intact, you need to add --mail
 twice, once with the old email, and once with the new one.
 
 ```
-python hermes.py modify -p john.smith --mail js@toptranslation.com --password 'sntauohe+r,{]' --description "This is not John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department sales --title "Windows Seller"
+./hermes.py modify -p john.smith --mail js@toptranslation.com --password 'sntauohe+r,{]' --description "This is not John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department sales --title "Windows Seller"
 ```
 
 ## Bugs
