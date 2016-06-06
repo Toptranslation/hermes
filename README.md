@@ -58,6 +58,12 @@ case, just writing john or smith should be enough:
 ./hermes.py print -p smith
 ```
 
+To list all available users, use ALL as a UID:
+```
+./hermes.py print -p ALL
+```
+Replace -p with -b or -c, if you want to list all bots or all clients.
+
 ### Forward
 
 Forward doesn't have any new options, and is used just for SSH
