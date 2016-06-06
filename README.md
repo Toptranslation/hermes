@@ -77,7 +77,7 @@ Use -b for bots, -p for people, and -c for clients. To create a user
 john.smith, use the following command:
 
 ```
-./hermes.py create -p john.smith --mail john.smith@toptranslation.com --mail js@toptranslation.com --password 'ASReub076!$)' --description "This is John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department management --title "windows cleaner"
+./hermes.py create -p john.smith --mail john.smith@gmail.com --mail js@toptranslation.com --password 'ASReub076!$)' --description "This is John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department management --title "windows cleaner"
 ```
 
 Replace -p with -b or -c, if you want to create a bot or a client.
@@ -85,6 +85,10 @@ Just the UID is mandatory, all of the other information could be
 skipped. If the password is skipped, "please_change!" is used. Do it
 just if the user will change it immediately, otherwise specify a
 random password.
+
+For each created user, an email address `firstname.lastname@toptranslation.com`
+is created automatically, so the --mail switch is needed just for
+additional emails.
 
 ### Delete
 
