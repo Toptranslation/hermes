@@ -853,6 +853,9 @@ def ldapcreate(options, conn):
             if options.mail:
                 attributes["mail"] += options.mail
 
+                # Delete duplicates, otherwise an error will occur.
+                attributes["mail"] = list(set(attributes["mail"]))
+
             if options.mobile:
                 attributes["mobile"] = options.mobile
 
@@ -1146,7 +1149,7 @@ def ldapdelete(options, conn):
                     {"userPassword": (ldap3.MODIFY_REPLACE,
                                       [ssha.encrypt(
                                           ssha.encrypt(
-                                              "randomuselesssaltedpassword"))])})
+                                           "randomuselesssaltedpassword"))])})
 
         verbose(options)("[INFO] " + str(conn.result))
 
