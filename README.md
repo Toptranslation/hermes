@@ -1,4 +1,4 @@
-# Hermes: TopTranslation LDAP script
+# Hermes: Toptranslation LDAP script
 
 ## What is this?
 
@@ -48,14 +48,14 @@ Use -b for bots, -p for people, and -c for clients. To search for a
 user matching john.smith, use the following command:
 
 ```
-python hermes.py print -p john.smith
+./hermes.py print -p john.smith
 ```
 Replace -p with -b or -c, if you search for bots or clients.
 
 The script will also check for partially matching names, so in this
 case, just writing john or smith should be enough:
 ```
-python hermes.py print -p smith
+./hermes.py print -p smith
 ```
 
 ### Forward
@@ -71,7 +71,7 @@ Use -b for bots, -p for people, and -c for clients. To create a user
 john.smith, use the following command:
 
 ```
-python hermes.py create -p john.smith --mail john.smith@toptranslation.com --mail js@toptranslation.com --password 'ASReub076!$)' --description "This is John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department management --title "windows cleaner"
+./hermes.py create -p john.smith --mail john.smith@gmail.com --mail js@toptranslation.com --password 'ASReub076!$)' --description "This is John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department management --title "windows cleaner"
 ```
 
 Replace -p with -b or -c, if you want to create a bot or a client.
@@ -80,13 +80,17 @@ skipped. If the password is skipped, "please_change!" is used. Do it
 just if the user will change it immediately, otherwise specify a
 random password.
 
+For each created user, an email address `firstname.lastname@toptranslation.com`
+is created automatically, so the --mail switch is needed just for
+additional emails.
+
 ### Delete
 
 Use -b for bots, -p for people, and -c for clients. To delete a user,
 just the UID is required:
 
 ```
-python hermes.py delete -p john.smith
+./hermes.py delete -p john.smith
 ```
 
 ### Modify
@@ -100,7 +104,7 @@ person, and want to keep the old email intact, you need to add --mail
 twice, once with the old email, and once with the new one.
 
 ```
-python hermes.py modify -p john.smith --mail js@toptranslation.com --password 'sntauohe+r,{]' --description "This is not John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department sales --title "Windows Seller"
+./hermes.py modify -p john.smith --mail js@toptranslation.com --password 'sntauohe+r,{]' --description "This is not John Smith" --mobile "+1234567890" --mobile "+498765432109" --telephone 44 --telephone 47 --department sales --title "Windows Seller"
 ```
 
 ## Bugs
