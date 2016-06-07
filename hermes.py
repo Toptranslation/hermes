@@ -603,7 +603,8 @@ def ldapprint(options, conn):
                       "telephoneNumber",
                       "ou",
                       "title",
-                      "uid"]
+                      "uid",
+                      "memberOf"]
 
         verbose(options)("[INFO] LDAP Search:" +
                          "\n\tsearch_base = " + search_base +
@@ -667,6 +668,13 @@ def ldapprint(options, conn):
             try:
                 for i in entry["attributes"]["telephoneNumber"]:
                     print("\tPhone = " + i)
+
+            except KeyError:
+                pass
+
+            try:
+                for i in entry["attributes"]["memberOf"]:
+                    print("\tGroup = " + i)
 
             except KeyError:
                 pass
