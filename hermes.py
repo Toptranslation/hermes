@@ -561,6 +561,7 @@ def client(options):
 
         elif options.COMMAND == "modify":
             ldapmodify(options, conn)
+            ldapprint(options, conn)
 
     except ldap3.core.exceptions.LDAPBindError:
         print("[ERROR] Sorry, Invalid credentials...")
