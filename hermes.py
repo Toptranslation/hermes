@@ -554,6 +554,7 @@ def client(options):
 
         elif options.COMMAND == "create":
             ldapcreate(options, conn)
+            ldapprint(options, conn)
 
         elif options.COMMAND == "delete":
             ldapdelete(options, conn)
